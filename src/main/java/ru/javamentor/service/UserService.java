@@ -1,8 +1,7 @@
 package ru.javamentor.service;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import ru.javamentor.model.Role;
-import ru.javamentor.model.User;
 
+import org.springframework.security.core.userdetails.UserDetailsService;
+import ru.javamentor.model.User;
 
 import java.util.List;
 

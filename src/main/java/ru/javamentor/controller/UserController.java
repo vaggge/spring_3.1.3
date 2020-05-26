@@ -1,9 +1,9 @@
 package ru.javamentor.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.javamentor.model.User;
 import ru.javamentor.service.RoleService;
@@ -22,7 +22,7 @@ public class UserController {
     public ResponseEntity<?> add(@RequestBody User user){
         user.setRoles(roleService.getRolesByName(roleService.getRolesNames(user.getRoles())));
         HttpStatus httpStatus = userService.addUser(user) ? HttpStatus.CREATED : HttpStatus.BAD_GATEWAY;
-        return new ResponseEntity<>(httpStatus);
+        return new ResponseEntity<>(user, httpStatus);
     }
 
     @GetMapping(value = "admin/users", consumes = MediaType.APPLICATION_JSON_VALUE)

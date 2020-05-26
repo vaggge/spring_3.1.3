@@ -1,8 +1,6 @@
 package ru.javamentor.dao;
 
 
-
-import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
 
 import java.util.List;

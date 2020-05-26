@@ -6,10 +6,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.javamentor.dao.UserDAO;
-import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

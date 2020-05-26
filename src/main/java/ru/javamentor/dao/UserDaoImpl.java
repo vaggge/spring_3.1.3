@@ -1,9 +1,7 @@
 package ru.javamentor.dao;
 
 import org.springframework.stereotype.Repository;
-import ru.javamentor.model.Role;
 import ru.javamentor.model.User;
-
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

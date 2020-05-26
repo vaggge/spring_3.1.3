@@ -20,11 +20,29 @@ $(function () {
                 url: 'admin/users',
                 type: 'POST',
                 data: JSON.stringify(user),
-                success: function(){
-                    alert('Successful');
+                success: function(user){
+                    let countOfRoles = $.isEmptyObject(user.roles[1]);
                     $('#formAdd')[0].reset();
-                    $('#allUsers').empty();
-                    usersList();
+                    $('#allUsers').append(`
+                    <tr id="${user.id}">
+                    <td>${user.id}</td>
+                    <td>${user.username}</td>
+                    <td>${user.password}</td>
+                    <td>${countOfRoles ? user.roles[0].name.slice(5) : user.roles[0].name.slice(5) + " " + user.roles[1].name.slice(5)}
+                    <td>
+                                     <button id="editUser" editID="${user.id}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
+                                     Edit
+                                     </button>
+                                 </td>
+                                 <td>
+                                     <button id="deleteUser" deleteID="${user.id}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal">
+                                     Delete
+                                     </button>
+                                 </td>
+                    </tr>
+                    `);
+                    $('[href="#users"]').tab('show');
+
                     },
                 error: function (a) {
                     alert('Username is busy');
@@ -44,7 +62,7 @@ function usersList() {
                 users.forEach(function (element) {
                     let countOfRoles = element.roles.length > 1;
                     $('#allUsers').append(
-                        `<tr>
+                        `<tr id="${element.id}">
                                  <td>${element.id}</td>
                                  <td>${element.username}</td>
                                  <td>${element.password}</td>
@@ -97,7 +115,7 @@ let id = parseInt(e.target.getAttribute('editID'), 10);
             document.querySelector('#userId').setAttribute('value', user.id);
             document.querySelector('#newUsername').setAttribute('value', user.username);
             document.querySelector('#newPassword').setAttribute('value', user.password);
-            document.querySelector('#userId').removeAttribute('readonly');
+            document.querySelector('#userId').setAttribute('readonly', 'true');
             document.querySelector('#newUsername').removeAttribute('readonly');
             document.querySelector('#newPassword').removeAttribute('readonly');
             document.querySelector('#newRoles').removeAttribute('disabled');
@@ -149,9 +167,27 @@ $(function () {
                 type: 'PUT',
                 data: JSON.stringify(user),
                 success: function () {
-                    alert('Successful');
-                    $('#allUsers').empty();
-                    usersList();
+                    let countOfRoles = $.isEmptyObject(user.roles[1]);
+                    console.log(user.roles[1]);
+                    $('#formAdd')[0].reset();
+                         $(`#${user.id}`).html(
+                        `
+                         <td>${user.id}</td>
+                         <td>${user.username}</td>
+                         <td>${user.password}</td>
+                         <td>${countOfRoles ? user.roles[0].name.slice(5) : user.roles[0].name.slice(5) + " " + user.roles[1].name.slice(5) }
+                         <td>
+                             <button id="editUser" editID="${user.id}" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal">
+                                 Edit
+                             </button>
+                         </td>
+                         <td>
+                             <button id="deleteUser" deleteID="${user.id}" type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal">
+                                 Delete
+                             </button>
+                         </td>
+                         `);
+                    $(".modal").modal("hide");
                 },
             });
     });
@@ -223,10 +259,9 @@ $(function () {
                 url: `admin/users/${user.id}`,
                 type: 'DELETE',
                 success: function () {
-                    alert('Successful');
                     $('#formAdd')[0].reset();
-                    $('#allUsers').empty();
-                    usersList();
+                    $(`#${user.id}`).remove();
+                    $(".modal").modal("hide");
                 },
             });
     });
